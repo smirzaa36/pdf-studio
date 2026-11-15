@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f5">
+  <title>PDF Studio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="PDF Studio navigation">
+      <a class="brand" href="#top" aria-label="PDF Studio home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>PDF Studio</span>
+      </a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <button id="navOrganise" class="nav-item active" data-mode="Organise" type="button"><span class="nav-icon">▦</span> Organise</button>
+      <button class="nav-item" data-mode="Edit" type="button"><span class="nav-icon">✎</span> Edit</button>
+      <button class="nav-item" data-mode="Stamp" type="button"><span class="nav-icon">✦</span> Stamp</button>
+      <button class="nav-item" data-mode="Convert" type="button"><span class="nav-icon">⇄</span> Convert</button>
+      <button class="nav-item" data-mode="Finish" type="button"><span class="nav-icon">✓</span> Finish</button>
+      <div class="sidebar-bottom">
+        <span class="privacy-icon" aria-hidden="true">◉</span>
+        <div><strong>Private by design</strong><small>Files stay on this device</small></div>
+      </div>
+    </aside>
+
+    <main id="top" class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb">PDF Studio <span>/</span> Organise</div>
+        <div class="offline-badge"><span class="status-dot"></span> Offline ready</div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p id="pageEyebrow" class="eyebrow">ORGANISE YOUR PAGES</p>
+          <h1 id="pageTitle">Merge PDFs</h1>
+          <p id="pageSubtitle" class="subtitle">Bring files together, arrange every page, and save a fresh PDF.</p>
+        </div>
+        <button id="addFilesTop" class="button button-secondary" type="button"><span aria-hidden="true">＋</span> Add PDFs</button>
+      </section>
+
+      <section id="modePanel" class="mode-panel hidden">
+        <div id="editTools" class="tool-card hidden">
+          <div class="tool-card-heading"><div><p class="eyebrow">EDIT</p><h2>Page tools</h2></div><span class="offline-chip">On this device</span></div>
+          <div class="edit-grid">
+            <label class="tool-field"><span>Page</span><select id="editPage"></select></label>
+            <label class="tool-field"><span>Tool</span><select id="editType"><option value="text">Add text</option><option value="image">Add image</option><option value="highlight">Highlight</option><option value="draw">Draw line</option><option value="shape">Rectangle</option><option value="whiteout">Whiteout</option><option value="redact">Redact permanently</option><option value="signature">Sign with typed name</option></select></label>
+            <label class="tool-field edit-text-field"><span>Text</span><input id="editText" type="text" placeholder="Enter text or signature"></label>
+            <label class="tool-field edit-image-field hidden"><span>Image</span><input id="editImage" type="file" accept="image/png,image/jpeg"></label>
+            <label class="tool-field edit-shape-field hidden"><span>Shape</span><select id="editShape"><option value="rectangle">Rectangle</option><option value="ellipse">Ellipse</option></select></label>
+            <label class="tool-field"><span>Text size</span><input id="editFontSize" type="number" min="6" max="96" value="18"></label>
+            <label class="tool-field"><span>Colour</span><input id="editColor" type="color" value="#20392a"></label>
+          </div>
+          <p class="coordinates-note">Placement uses percentages from the visible page’s top-left. Redaction rasterizes that page so covered text can’t be selected or searched.</p>
+          <div class="coordinate-fields">
+            <label>X %<input id="editX" type="number" min="0" max="95" value="12"></label>
+            <label>Y %<input id="editY" type="number" min="0" max="95" value="18"></label>
+            <label>Width %<input id="editWidth" type="number" min="1" max="100" value="50"></label>
+            <label>Height %<input id="editHeight" type="number" min="1" max="100" value="10"></label>
+            <button id="applyEdit" class="button button-primary" type="button">Apply to page</button>
+            <button id="clearPageEdits" class="button button-secondary" type="button">Clear page edits</button>
+          </div>
+          <div id="formFields" class="form-fields hidden"><h3>Fillable form fields</h3><div id="formFieldList"></div></div>
+        </div>
+
+        <div id="stampTools" class="tool-card hidden">
+          <div class="tool-card-heading"><div><p class="eyebrow">STAMP</p><h2>Add page stamps</h2></div><span class="offline-chip">On this device</span></div>
+          <div class="stamp-grid">
+            <label class="tool-field"><span>Watermark text</span><input id="watermarkText" type="text" placeholder="DRAFT"></label>
+            <label class="tool-field"><span>Header</span><input id="headerText" type="text" placeholder="Optional header"></label>
+            <label class="tool-field"><span>Footer</span><input id="footerText" type="text" placeholder="Optional footer"></label>
+            <label class="check-field"><input id="pageNumbers" type="checkbox"> Add page numbers</label>
+            <label class="check-field"><input id="dateStamp" type="checkbox"> Add today’s date</label>
+          </div>
+          <div class="tool-actions"><button id="applyStamps" class="button button-primary" type="button">Use these stamps</button><button id="clearStamps" class="button button-secondary" type="button">Clear stamps</button></div>
+        </div>
+
+        <div id="convertTools" class="tool-card hidden">
+          <div class="tool-card-heading"><div><p class="eyebrow">CONVERT</p><h2>Convert files</h2></div><span class="offline-chip">On this device</span></div>
+          <div class="convert-grid">
+            <label class="tool-field"><span>Images to PDF</span><input id="imageInput" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" multiple></label>
+            <button id="imagesToPdf" class="button button-secondary" type="button">Create PDF from images</button>
+            <button id="pdfToImages" class="button button-secondary" type="button">Save pages as images</button>
+            <button id="pdfToText" class="button button-secondary" type="button">Save text</button>
+          </div>
+          <p class="coordinates-note">PDF pages are exported in their current order. Image pages are placed on separate PDF pages.</p>
+        </div>
+
+        <div id="finishTools" class="tool-card hidden">
+          <div class="tool-card-heading"><div><p class="eyebrow">FINISH</p><h2>Check and finish</h2></div><span class="offline-chip">On this device</span></div>
+          <div class="metadata-grid">
+            <label class="tool-field"><span>Title</span><input id="metaTitle" type="text"></label>
+            <label class="tool-field"><span>Author</span><input id="metaAuthor" type="text"></label>
+            <label class="tool-field"><span>Subject</span><input id="metaSubject" type="text"></label>
+          </div>
+          <div class="tool-actions"><button id="saveMetadata" class="button button-secondary" type="button">Apply details</button><button id="removeMetadata" class="button button-secondary" type="button">Remove details</button><button id="compressPdf" class="button button-primary" type="button">Compress &amp; save</button></div>
+          <div class="compare-row"><label class="tool-field"><span>Second PDF</span><input id="compareInput" type="file" accept="application/pdf,.pdf"></label><button id="comparePdfs" class="button button-secondary" type="button">Compare PDFs</button></div>
+          <div id="compareResults" class="compare-results hidden" role="status"></div>
+          <div id="compressionResults" class="compression-results hidden" role="status"></div>
+        </div>
+      </section>
+
+      <section id="dropZone" class="drop-zone" aria-label="Add PDF files">
+        <div class="drop-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" role="presentation"><path d="M14 7h14l9 9v23a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3V10a3 3 0 0 1 3-3Z"/><path d="M28 7v10h9M24 33V22m-5 5 5-5 5 5"/></svg>
+        </div>
+        <div class="drop-copy">
+          <h2>Drop your PDFs here</h2>
+          <p>or choose files from your computer</p>
+        </div>
+        <button id="chooseFiles" class="button button-primary" type="button">Choose PDFs</button>
+        <p class="drop-note"><span aria-hidden="true">🔒</span> Your files are processed locally. Nothing is uploaded.</p>
+      </section>
+      <input id="fileInput" type="file" accept="application/pdf,.pdf" multiple hidden>
+
+      <section id="workspace" class="workspace hidden" aria-live="polite">
+        <div class="section-toolbar">
+          <div class="loaded-summary"><h2>Pages</h2><span id="summaryPill" class="count-pill">0 pages</span></div>
+          <div class="toolbar-actions">
+            <button id="toggleSplitPanel" class="small-outline-button" type="button">Split by ranges</button>
+            <button id="toggleExtractPanel" class="small-outline-button" type="button">Extract pages</button>
+            <button id="insertBlankEnd" class="small-outline-button" type="button">＋ Blank page</button>
+            <button id="addMore" class="text-button" type="button">＋ Add more PDFs</button>
+            <button id="clearAll" class="text-button muted" type="button">Clear all</button>
+          </div>
+        </div>
+        <form id="splitPanel" class="split-panel hidden">
+          <div class="split-intro"><span class="split-symbol" aria-hidden="true">✂</span><div><h3>Split by page ranges</h3><p>Each comma-separated range becomes a PDF, in the order shown above.</p></div></div>
+          <div class="split-fields">
+            <label class="split-field"><span>Page ranges</span><input id="splitRanges" type="text" placeholder="For example: 1-3, 4-6" autocomplete="off" spellcheck="false"><small>Use page numbers from the current order. Ranges can’t overlap.</small></label>
+            <label class="split-field"><span>ZIP filename</span><div class="filename-field"><input id="splitName" type="text" value="split-files" autocomplete="off" spellcheck="false"><span>.zip</span></div></label>
+            <button id="splitButton" class="button button-secondary" type="submit">Create PDFs</button>
+          </div>
+        </form>
+        <form id="extractPanel" class="split-panel hidden">
+          <div class="split-intro"><span class="split-symbol" aria-hidden="true">⇧</span><div><h3>Extract selected pages</h3><p>Combine the chosen page ranges into one PDF, in the order you enter them.</p></div></div>
+          <div class="split-fields">
+            <label class="split-field"><span>Page ranges</span><input id="extractRanges" type="text" placeholder="For example: 2-4, 7" autocomplete="off" spellcheck="false"><small>Use page numbers from the current order.</small></label>
+            <label class="split-field"><span>PDF filename</span><div class="filename-field"><input id="extractName" type="text" value="extracted-pages" autocomplete="off" spellcheck="false"><span>.pdf</span></div></label>
+            <button id="extractButton" class="button button-secondary" type="submit">Extract pages</button>
+          </div>
+        </form>
+        <div class="reorder-hint"><span class="hint-symbol" aria-hidden="true">↕</span> Drag pages to reorder, or use the arrow buttons on each page.</div>
+        <div id="pageGrid" class="page-grid" aria-label="PDF pages in output order"></div>
+      </section>
+
+      <section id="savePanel" class="save-panel hidden" aria-labelledby="saveHeading">
+        <div class="save-copy">
+          <div class="save-icon" aria-hidden="true">↓</div>
+          <div><h2 id="saveHeading">Save your merged PDF</h2><p>Choose a name, then download your new file.</p></div>
+        </div>
+        <form id="saveForm" class="save-controls">
+          <label class="sr-only" for="outputName">Output PDF filename</label>
+          <div class="filename-field"><input id="outputName" type="text" value="merged" autocomplete="off" spellcheck="false"><span>.pdf</span></div>
+          <button id="saveButton" class="button button-primary" type="submit"><span aria-hidden="true">↓</span> Save PDF</button>
+        </form>
+      </section>
+
+      <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+      <footer class="page-footer"><span>PDF Studio</span><span>Private, local, and ready offline</span></footer>
+    </main>
+  </div>
+  <dialog id="cropDialog" class="crop-dialog">
+    <form id="cropForm" method="dialog">
+      <div class="crop-dialog-head"><div><p class="eyebrow">ORGANISE</p><h2>Crop page</h2></div><button id="closeCrop" class="icon-button" type="button" aria-label="Close crop dialog">×</button></div>
+      <p class="crop-description">Set how much to trim from each page edge. Values are percentages of the original page.</p>
+      <div class="crop-grid">
+        <label>Top %<input id="cropTop" type="number" min="0" max="45" step="1" value="0"></label>
+        <label>Right %<input id="cropRight" type="number" min="0" max="45" step="1" value="0"></label>
+        <label>Bottom %<input id="cropBottom" type="number" min="0" max="45" step="1" value="0"></label>
+        <label>Left %<input id="cropLeft" type="number" min="0" max="45" step="1" value="0"></label>
+      </div>
+      <p id="cropError" class="crop-error" role="alert"></p>
+      <div class="crop-dialog-actions"><button id="resetCrop" class="button button-secondary" type="button">Reset crop</button><button class="button button-primary" type="submit">Apply crop</button></div>
+    </form>
+  </dialog>
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="vendor/jszip.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
